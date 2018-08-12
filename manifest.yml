@@ -1,0 +1,13 @@
+---
+applications:
+- name: dbtest
+  memory: 1024M
+  instances: 1
+  random-route: true
+  path: build/libs/springdatasource-0.0.1-SNAPSHOT.jar
+  buildpack: https://github.com/cloudfoundry/java-buildpack
+  services:
+  - dbtest-db
+  env:
+      SPRING_PROFILES_ACTIVE : cloud
+      #SPRING_PROFILES_ACTIVE : default
