@@ -14,6 +14,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @Profile("default")
+/*  @Profile("default") 의 경루 로컬 테스트 환경에서 사용되는 데이터소스 환경입니다. */
 public class DataSourceConfig {
 
     @Autowired

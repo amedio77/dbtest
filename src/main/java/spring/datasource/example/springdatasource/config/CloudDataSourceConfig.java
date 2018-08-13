@@ -29,7 +29,7 @@ public class CloudDataSourceConfig extends AbstractCloudConfig {
     public Cloud cloud() {
         return new CloudFactory().getCloud();
     }
-
+    /* cloud().getServiceConnector(서비스명, DataSource.class, null); 을 이용하여 PAAS 상의 앱과 바인드된 서비스 데이터소스를 가지고 옵니다 */
     /*
     @Bean
     public DataSource dataSource() {
@@ -38,6 +38,7 @@ public class CloudDataSourceConfig extends AbstractCloudConfig {
     }
     */
 
+    /* extends AbstractCloudConfig 를 통해서  connectionFactory().dataSource(서비스명) 을 이용하여 PAAS 상의 앱과 바인드된 서비스 데이터소스를 가지고 옵니다 */
   /*
     @Bean
     public DataSource dataSource() {
@@ -46,6 +47,10 @@ public class CloudDataSourceConfig extends AbstractCloudConfig {
     }
    */
 
+
+    /* VCAP_SERVICES 설정정보를 단순히 텍스트로 가져오는 샘플입니다. 가저온 스트링 텍스트 정보를 파싱하여 원하는 정보를 획득하여  획득한 정보를 통해 데이터 소스를 가져옵니다.
+    *  스트링 파싱 부분은 따로 작성하지 않았습니다.
+    * */
     /*
     @Bean
     public DataSource dataSource() {
@@ -63,7 +68,7 @@ public class CloudDataSourceConfig extends AbstractCloudConfig {
     }
     */
 
-
+    /*cloud().getCloudProperties() 를 이용하여 PAAS 상의 앱과 바인드된 서비스 연결정보를 획득하여 획득한 정보를 통해 데이터 소스를 가져옵니다.*/
     @Bean
     public DataSource dataSource() {
 
