@@ -1,9 +1,9 @@
 package spring.datasource.example.springdatasource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
+//import org.springframework.data.mongodb.core.MongoTemplate;
+//import org.springframework.data.mongodb.core.query.Criteria;
+//import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
@@ -24,8 +24,8 @@ public  class SampleDao {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    @Autowired
-    MongoTemplate mongoTemplate;
+   // @Autowired
+   // MongoTemplate mongoTemplate;
 
 
     public void CreateTable( ) throws SQLException {
@@ -94,7 +94,7 @@ public  class SampleDao {
 
         return map;
     }
-
+/*
     public HashMap mongoTest(){
 
         HashMap<String, Object> map = new HashMap<>();
@@ -112,6 +112,6 @@ public  class SampleDao {
 
         return map;
     }
-
+*/
 
 }

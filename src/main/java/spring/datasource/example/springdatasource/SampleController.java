@@ -27,7 +27,7 @@ public class SampleController {
 
         result.add(sampleDao.getData());
         result.add(sampleDao.redisTest());
-        result.add(sampleDao.mongoTest());
+        //result.add(sampleDao.mongoTest());
 
         return result;
     }

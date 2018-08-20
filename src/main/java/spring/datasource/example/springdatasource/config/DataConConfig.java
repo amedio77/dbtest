@@ -1,6 +1,8 @@
 package spring.datasource.example.springdatasource.config;
 
-import com.mongodb.*;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.boot.autoconfigure.mongo.MongoProperties;
 import org.springframework.cloud.config.java.AbstractCloudConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +12,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.data.authentication.UserCredentials;
-import org.springframework.data.mongodb.MongoDbFactory;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
+//import org.springframework.data.mongodb.MongoDbFactory;
+//import org.springframework.data.mongodb.core.MongoTemplate;
+//import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -73,7 +75,7 @@ public class DataConConfig {
 
 
     // Mongo Local ConnectionFactory
-
+/*
     @Bean
     public MongoTemplate mongoTemplate() throws Exception {
         return new MongoTemplate(mongoFactory());
@@ -83,5 +85,27 @@ public class DataConConfig {
     public MongoDbFactory mongoFactory() throws Exception {
         return new SimpleMongoDbFactory(new MongoClient("localhost", 27017), "mongodb");
     }
+*/
+
+    @Bean
+    public RabbitTemplate rabbitTemplate() {
+        RabbitTemplate template = new RabbitTemplate(connectionFactory());
+        template.setRoutingKey("QUEUE_NAME");
+        //template.setMessageConverter(jsonMessageConverter());
+        return template;
+    }
+
+    @Bean
+    public ConnectionFactory connectionFactory() {
+
+        System.out.println(" ConnectionFactory !!! ");
+        CachingConnectionFactory factory = new CachingConnectionFactory();
+        factory.setHost("localhost");
+        factory.setUsername("guest");
+        factory.setPassword("guest");
+        factory.setPort(15672);
+        return factory;
+    }
+
 
 }

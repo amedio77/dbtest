@@ -21,8 +21,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.data.mongodb.MongoDbFactory;
-import org.springframework.data.mongodb.core.MongoTemplate;
+//import org.springframework.data.mongodb.MongoDbFactory;
+//import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -97,16 +97,7 @@ public class CloudDataConConfig extends AbstractCloudConfig {
         return redisTemplate;
     }
 
-    //rabbitmq
-    /*
-    @Bean
-    public ConnectionFactory rabbitFactory() {
-        //RabbitConnectionFactory
-        return connectionFactory().rabbitConnectionFactory("rabbit-servicename");
-    }
-    */
-
-
+/*
     //mongodb
     @Bean
     public MongoTemplate mongoTemplate() throws Exception {
@@ -117,5 +108,28 @@ public class CloudDataConConfig extends AbstractCloudConfig {
     public MongoDbFactory mongoFactory() {
         return connectionFactory().mongoDbFactory("dbtest-mongo");
     }
+*/
+
+    //rabbitmq
+
+    @Bean
+    public RabbitTemplate rabbitTemplate() {
+        RabbitTemplate template = new RabbitTemplate(rabbitFactory());
+        template.setRoutingKey("QUEUE_NAME");
+        //template.setMessageConverter(jsonMessageConverter());
+        return template;
+    }
+
+    @Bean
+    public ConnectionFactory rabbitFactory() {
+        //RabbitConnectionFactory
+        //ConnectionFactory con = connectionFactory().rabbitConnectionFactory();
+        ConnectionFactory con = connectionFactory().rabbitConnectionFactory("dbtest-rabbitmq");
+
+        //System.out.println("### wootest rabbitFactory get Host name ==> "+con.getHost());
+
+        return con;
+    }
+
 
 }
