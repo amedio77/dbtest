@@ -1,5 +1,7 @@
 package spring.datasource.example.springdatasource.config;
 
+import com.mongodb.*;
+import org.springframework.boot.autoconfigure.mongo.MongoProperties;
 import org.springframework.cloud.config.java.AbstractCloudConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -7,6 +9,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
+import org.springframework.data.authentication.UserCredentials;
+import org.springframework.data.mongodb.MongoDbFactory;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -14,6 +20,9 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import redis.clients.jedis.JedisPoolConfig;
 import javax.sql.DataSource;
+import java.net.UnknownHostException;
+import java.util.Arrays;
+import java.util.List;
 
 
 @Configuration
@@ -60,5 +69,19 @@ public class DataConConfig {
         return redisTemplate;
     }
 
+
+
+
+    // Mongo Local ConnectionFactory
+
+    @Bean
+    public MongoTemplate mongoTemplate() throws Exception {
+        return new MongoTemplate(mongoFactory());
+    }
+
+    @Bean
+    public MongoDbFactory mongoFactory() throws Exception {
+        return new SimpleMongoDbFactory(new MongoClient("localhost", 27017), "mongodb");
+    }
 
 }

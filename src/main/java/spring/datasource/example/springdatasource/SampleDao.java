@@ -1,6 +1,9 @@
 package spring.datasource.example.springdatasource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
@@ -20,6 +23,10 @@ public  class SampleDao {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    MongoTemplate mongoTemplate;
+
 
     public void CreateTable( ) throws SQLException {
 
@@ -84,6 +91,24 @@ public  class SampleDao {
 
         map.put("user_id", "testRedis");
         map.put("email", redisTemplate.opsForList().index("testRedis", 0));
+
+        return map;
+    }
+
+    public HashMap mongoTest(){
+
+        HashMap<String, Object> map = new HashMap<>();
+        User user = new User("mkyong", "mogoemail");
+        mongoTemplate.save(user);
+
+        // query to search user
+        Query searchUserQuery = new Query(Criteria.where("username").is("mkyong"));
+
+        // find the saved user again.
+        User savedUser = mongoTemplate.findOne(searchUserQuery, User.class);
+
+        map.put("user_id", savedUser.getUsername());
+        map.put("email", savedUser.getEmail());
 
         return map;
     }

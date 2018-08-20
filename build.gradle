@@ -37,6 +37,8 @@ dependencies {
 
     //compile group: 'org.springframework.data', name: 'spring-data-redis', version: '2.0.9.RELEASE'
     compile  'org.springframework.boot:spring-boot-starter-data-redis:1.5.7.RELEASE'
+    compile  'org.springframework.boot:spring-boot-starter-amqp'
+    compile  'org.springframework.data:spring-data-mongodb:2.0.9.RELEASE'
 
     compile group: 'org.springframework.cloud', name: 'spring-cloud-spring-service-connector', version: '2.0.1.RELEASE'
     compile group: 'org.springframework.cloud', name: 'spring-cloud-cloudfoundry-connector', version: '2.0.1.RELEASE'

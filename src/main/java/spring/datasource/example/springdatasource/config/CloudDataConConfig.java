@@ -1,6 +1,15 @@
 package spring.datasource.example.springdatasource.config;
 
 
+
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.Cloud;
 import org.springframework.cloud.CloudFactory;
@@ -12,6 +21,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.data.mongodb.MongoDbFactory;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -19,6 +30,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
+import java.util.Queue;
 
 @Configuration
 @Profile("cloud")
@@ -69,7 +81,7 @@ public class CloudDataConConfig extends AbstractCloudConfig {
         return connectionFactory().dataSource("dbtest-db");
    }
 
-
+    //redis
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         // return connectionFactory().redisConnectionFactory(); redis Single Service
@@ -85,21 +97,25 @@ public class CloudDataConConfig extends AbstractCloudConfig {
         return redisTemplate;
     }
 
-
-/*
-
+    //rabbitmq
+    /*
     @Bean
     public ConnectionFactory rabbitFactory() {
         //RabbitConnectionFactory
         return connectionFactory().rabbitConnectionFactory("rabbit-servicename");
     }
+    */
 
 
+    //mongodb
+    @Bean
+    public MongoTemplate mongoTemplate() throws Exception {
+        return new MongoTemplate(mongoFactory());
+    }
 
     @Bean
     public MongoDbFactory mongoFactory() {
-
-        return connectionFactory().mongoDbFactory("mongo-service");
+        return connectionFactory().mongoDbFactory("dbtest-mongo");
     }
- */
+
 }
