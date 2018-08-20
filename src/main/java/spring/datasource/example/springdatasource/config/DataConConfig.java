@@ -7,15 +7,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-
+import redis.clients.jedis.JedisPoolConfig;
 import javax.sql.DataSource;
 
 
 @Configuration
 @Profile("default")
 /*  @Profile("default") 의 경루 로컬 테스트 환경에서 사용되는 데이터소스 환경입니다. */
-public class DataSourceConfig {
+public class DataConConfig {
 
     @Autowired
     private Environment env;
@@ -34,5 +38,27 @@ public class DataSourceConfig {
         dataSource.setPassword(env.getProperty("user.datasource.password"));
         return dataSource;
     }
+
+
+    // Redis Local ConnectionFactory
+    @Bean
+    public JedisConnectionFactory redisConnectionFactory() {
+        JedisConnectionFactory connectionFactory = new JedisConnectionFactory();
+        connectionFactory.setUsePool(false);
+        connectionFactory.setHostName("localhost");
+        connectionFactory.setPort(6379);
+
+        return connectionFactory;
+    }
+
+    @Bean
+    public RedisTemplate<String, Object> redisTemplate() {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new StringRedisSerializer());
+        redisTemplate.setConnectionFactory(redisConnectionFactory());
+        return redisTemplate;
+    }
+
 
 }

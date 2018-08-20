@@ -1,8 +1,11 @@
 package spring.datasource.example.springdatasource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,9 +14,12 @@ import java.sql.SQLException;
 import java.util.HashMap;
 
 @Component
-public  class TestDao {
+public  class SampleDao {
     @Autowired
     private DataSource dataSource;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     public void CreateTable( ) throws SQLException {
 
@@ -69,4 +75,18 @@ public  class TestDao {
         return map;
 
     }
+
+    public HashMap redisTest(){
+        HashMap<String, Object> map = new HashMap<>();
+        redisTemplate.opsForList().leftPush("testRedis", "testredis@gmail.com");
+
+        System.out.println(redisTemplate.opsForList().index("testRedis", 0));
+
+        map.put("user_id", "testRedis");
+        map.put("email", redisTemplate.opsForList().index("testRedis", 0));
+
+        return map;
+    }
+
+
 }
